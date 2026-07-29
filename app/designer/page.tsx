@@ -377,15 +377,19 @@ export default function DesignerPage() {
             </button>
             <button
               onClick={() => {
-                const fontName = 'BugFont_' + Date.now();
-                // A very wide/chunky font to make the slice obvious
-                const fontUrl = 'https://fonts.gstatic.com/s/modak/v19/EJRYQgkwoaj58f27Gg.woff2'; 
-                const newStyle = document.createElement('style');
-                newStyle.innerHTML = `@font-face { font-family: '${fontName}'; src: url('${fontUrl}') format('woff2'); }`;
-                document.head.appendChild(newStyle);
+                const fontName = 'Creepster'; // A very chunky font from Google Fonts
+                
+                // 1. Inject the Google Fonts stylesheet to trigger a fresh network request
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                // Add a random timestamp so the browser is forced to download it every time you click
+                link.href = 'https://fonts.googleapis.com/css2?family=Creepster&display=swap&t=' + Date.now();
+                document.head.appendChild(link);
 
                 const canvas = (window as any).canvas;
                 if (!canvas) { alert('Canvas not ready'); return; }
+                
+                // 2. Add the text immediately before the font stylesheet finishes downloading
                 const text = new (window as any).fabric.Text('Slice Me Please!', {
                   left: 50,
                   top: 50,
