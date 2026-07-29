@@ -129,18 +129,16 @@ export default function DesignerPage() {
     }`}>
       {/* Google Fonts and CSS Aliases */}
       <style dangerouslySetInnerHTML={{ __html: `
-        @import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Andika&family=Anton&family=Audiowide&family=Bad+Script&family=Barlow&family=Bebas+Neue&family=Montserrat:wght@400;700&display=swap');
 
         /* Font aliases for Fabric.js */
-        @font-face { font-family: 'AbrilFatface'; src: local('Abril Fatface'); }
-        @font-face { font-family: 'Andika'; src: local('Andika'); }
-        @font-face { font-family: 'Anton'; src: local('Anton'); }
-        @font-face { font-family: 'ArialRoundedMTBold'; src: local('Arial Rounded MT Bold'), local('Arial'); }
-        @font-face { font-family: 'Audiowide'; src: local('Audiowide'); }
-        @font-face { font-family: 'BadScript'; src: local('Bad Script'); }
-        @font-face { font-family: 'Barlow'; src: local('Barlow'); }
-        @font-face { font-family: 'BebasNeue'; src: local('Bebas Neue'); }
-        @font-face { font-family: 'Montserrat'; src: local('Montserrat'); }
+        @font-face { font-family: 'AbrilFatface'; src: url('https://fonts.gstatic.com/s/abrilfatface/v19/zPTBa5-y5vLxJ9PTpALpI4s0vA.woff2') format('woff2'); }
+        @font-face { font-family: 'Andika'; src: url('https://fonts.gstatic.com/s/andika/v21/q5uGsZE-AW6w_JWsU_E.woff2') format('woff2'); }
+        @font-face { font-family: 'Anton'; src: url('https://fonts.gstatic.com/s/anton/v23/1Ptgg87LROyAm3Kz-C8.woff2') format('woff2'); }
+        @font-face { font-family: 'Audiowide'; src: url('https://fonts.gstatic.com/s/audiowide/v16/l7gdbjpo0cum0ckerWCdlg_O.woff2') format('woff2'); }
+        @font-face { font-family: 'BadScript'; src: url('https://fonts.gstatic.com/s/badscript/v17/6NUT8F6PJgbFWQn47_x7lOw.woff2') format('woff2'); }
+        @font-face { font-family: 'Barlow'; src: url('https://fonts.gstatic.com/s/barlow/v12/791Vvd72Epdj3p4zS6K7.woff2') format('woff2'); }
+        @font-face { font-family: 'BebasNeue'; src: url('https://fonts.gstatic.com/s/bebasneue/v9/JTUSjIg69CK48gW7PXooo9c.woff2') format('woff2'); }
+        @font-face { font-family: 'Montserrat'; src: url('https://fonts.gstatic.com/s/montserrat/v25/JTUSjIg1_i6t8kCHKm459WlhyyTh89Y.woff2') format('woff2'); }
 
         /* Legacy checkFrontLoad fallbacks to avoid reloads */
         @font-face { font-family: 'monstroregular'; src: local('Arial'); }
@@ -376,6 +374,33 @@ export default function DesignerPage() {
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
               Add Custom Text
+            </button>
+            <button
+              onClick={() => {
+                const fontName = 'BugFont_' + Date.now();
+                // A very wide/chunky font to make the slice obvious
+                const fontUrl = 'https://fonts.gstatic.com/s/modak/v19/EJRYQgkwoaj58f27Gg.woff2'; 
+                const newStyle = document.createElement('style');
+                newStyle.innerHTML = `@font-face { font-family: '${fontName}'; src: url('${fontUrl}') format('woff2'); }`;
+                document.head.appendChild(newStyle);
+
+                const canvas = (window as any).canvas;
+                if (!canvas) { alert('Canvas not ready'); return; }
+                const text = new (window as any).fabric.Text('Slice Me Please!', {
+                  left: 50,
+                  top: 50,
+                  fontFamily: fontName,
+                  fontSize: 80
+                });
+                canvas.add(text);
+                canvas.setActiveObject(text);
+                canvas.requestRenderAll();
+              }}
+              className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-medium border transition mt-2 ${
+                theme === 'dark' ? 'bg-red-900/20 hover:bg-red-900/40 text-red-400 border-red-800' : 'bg-red-50 hover:bg-red-100 text-red-600 border-red-200'
+              }`}
+            >
+              Test The Bug (Race Condition)
             </button>
           </div>
 
